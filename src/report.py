@@ -46,7 +46,7 @@ def generar_reporte(registros: list[dict], errores: list[str], fecha: datetime |
         celda.fill = PatternFill(fill_type="solid", start_color=COLOR_ENCABEZADO, end_color=COLOR_ENCABEZADO)
         celda.alignment = Alignment(horizontal="center")
     for indice, (_, _, ancho) in enumerate(COLUMNAS, start=1):
-        hoja.column_dimensions[hoja.cell(row=1, column=indice).column_letter].width = ancho
+        hoja.column_dimensions[hoja.cell(row=1, column=indice).column_letter].width = ancho + 4
     hoja.freeze_panes = "A2"
     hoja.auto_filter.ref = hoja.dimensions
 
