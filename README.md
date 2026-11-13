@@ -1,4 +1,5 @@
 # 🌦️ Reporte automático de clima (Python + API)
+![tests](https://github.com/ElYaret/weather-report-automation/actions/workflows/tests.yml/badge.svg)
 
 ## Problema
 Automatizar una tarea repetitiva: consultar a diario el clima de varias ciudades, validar los datos y entregar un reporte en Excel, sin intervención manual y con un registro de lo que pasó en cada ejecución.
