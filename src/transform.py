@@ -8,6 +8,7 @@ class ErrorDeValidacion(Exception):
 def transformar(ciudad_consultada: str, datos: dict) -> dict:
     try:
         registro = {
+            "ciudad_consulta": ciudad_consultada,
             "ciudad": datos["name"],
             "pais": datos.get("sys", {}).get("country"),
             "temperatura_c": float(datos["main"]["temp"]),

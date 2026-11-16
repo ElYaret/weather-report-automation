@@ -3,7 +3,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import psycopg
+
 from fetch import ErrorDeApi, obtener_clima
+from load import cargar
 from report import generar_reporte
 from transform import ErrorDeValidacion, transformar
 
@@ -46,9 +49,23 @@ def main() -> int:
         logger.error("Ninguna ciudad se pudo procesar: no se genera reporte")
         return 1
 
-    ruta = generar_reporte(registros, errores)
+    codigo = 0
+
+    try:
+        nuevos, existentes = cargar(registros)
+        logger.info("Base de datos: %d filas nuevas, %d ya existian", nuevos, existentes)
+    except psycopg.Error as error:
+        # Solo el tipo de error: el mensaje completo puede traer datos de la conexion
+        logger.error("No se pudo cargar a PostgreSQL (%s)", type(error).__name__)
+        codigo = 1
+
+    try:
+        ruta = generar_reporte(registros, errores)
+    except PermissionError:
+        logger.error("No se pudo guardar el reporte: el Excel esta abierto? Cierralo y reintenta")
+        return 1
     logger.info("Reporte generado: %s (%d correctas, %d con error)", ruta, len(registros), len(errores))
-    return 0
+    return codigo
 
 
 if __name__ == "__main__":
