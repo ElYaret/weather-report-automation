@@ -57,6 +57,7 @@ def test_valores_fuera_de_rango(temperatura, humedad):
     with pytest.raises(ErrorDeValidacion):
         transformar("Lima,PE", datos)
 
+
 @pytest.mark.parametrize("humedad", [0, 100])
 def test_humedad_en_los_limites_es_valida(humedad):
     datos = respuesta_valida()
@@ -69,3 +70,8 @@ def test_temperatura_en_los_limites_es_valida(temperatura):
     datos = respuesta_valida()
     datos["main"]["temp"] = temperatura
     assert transformar("Lima,PE", datos)["temperatura_c"] == temperatura
+
+
+def test_incluye_la_ciudad_tal_como_se_consulto():
+    registro = transformar("Lima,PE", respuesta_valida())
+    assert registro["ciudad_consulta"] == "Lima,PE"
